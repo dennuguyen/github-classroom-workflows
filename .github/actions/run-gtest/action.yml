@@ -25,7 +25,7 @@ runs:
     shell: bash
     run: |
       TEST_FILE="$CMAKE_CURRENT_SOURCE_DIR/${{ inputs.target }}.cpp"
-      TEST_EXEC="build/${{ inputs.target }}"
+      TEST_EXEC="$CMAKE_BINARY_DIR/${{ inputs.target }}"
       TEST_CONFIG=$(mktemp)
       RESULT_FILE="${{ inputs.target }}.result.json"
       REPORT_FILE="${{ inputs.target }}.report.json"

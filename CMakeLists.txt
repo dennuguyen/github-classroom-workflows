@@ -11,7 +11,7 @@ find_package(GTest REQUIRED)
 include(GoogleTest)
 
 option(ENABLE_SANITIZERS "Enable Address/Leak/UndefinedBehavior sanitizers" ON)
-set(SANITIZE_FLAGS "-fsanitize=address,leak,undefined,pointer-compare,pointer-subtract")
+set(SANITIZE_FLAGS "-fsanitize=address,undefined,pointer-compare,pointer-subtract")
 
 macro(build_gtest_suite TEST)
     add_executable(${TEST} ${TEST}.cpp)
@@ -24,6 +24,8 @@ macro(build_gtest_suite TEST)
 
     file(WRITE "${CMAKE_BINARY_DIR}/.env"
         "CMAKE_CURRENT_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}\n"
+        "CMAKE_SOURCE_DIR=${CMAKE_SOURCE_DIR}\n"
+        "CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}\n"
     )
 endmacro()
 
