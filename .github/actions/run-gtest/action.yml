@@ -19,7 +19,7 @@ runs:
     shell: bash
     run: |
       cmake --build build --target ${{ inputs.target }}
-      echo $(cat build/.env)
+      cat build/.env >> $GITHUB_ENV
   - name: Run tests
     id: run-tests
     shell: bash
