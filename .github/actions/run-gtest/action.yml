@@ -20,19 +20,15 @@ runs:
     run: |
       cmake --build build --target ${{ inputs.target }}
       echo $(cat build/.env)
-      cat build/.env >> $GITHUB_ENV
   - name: Run tests
     id: run-tests
     shell: bash
     run: |
       TEST_FILE="$CMAKE_CURRENT_SOURCE_DIR/${{ inputs.target }}.cpp"
-      TEST_EXEC="$CMAKE_BINARY_DIR/${{ inputs.target }}"
+      TEST_EXEC="$CMAKE_CURRENT_BINARY_DIR/${{ inputs.target }}"
       TEST_CONFIG=$(mktemp)
       RESULT_FILE="${{ inputs.target }}.result.json"
       REPORT_FILE="${{ inputs.target }}.report.json"
-
-      echo $TEST_FILE
-      echo $TEST_EXEC
 
       python3 discover_tests.py $TEST_FILE $TEST_CONFIG > /dev/null
       python3 run_tests.py $TEST_EXEC $TEST_CONFIG $RESULT_FILE > /dev/null
