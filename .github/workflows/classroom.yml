@@ -60,13 +60,14 @@ jobs:
       id: stage-1
       uses: ./.github/actions/run-gtest
       with:
-        target: test/test_stage1
+        target: test_stage1
     - name: Test Stage 2
       id: stage-2
       uses: ./.github/actions/run-gtest
       with:
-        target: test/test_stage2
+        target: test_stage2
     - name: Final grade
+      if: always()
       uses: ./.github/actions/report-grade
       with:
         results: |

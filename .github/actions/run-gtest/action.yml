@@ -17,12 +17,14 @@ runs:
   steps:
   - name: Build tests
     shell: bash
-    run: cmake --build build --target ${{ inputs.target }}
+    run: |
+      cmake --build build --target ${{ inputs.target }}
+      cat build/.env >> $GITHUB_ENV
   - name: Run tests
     id: run-tests
     shell: bash
     run: |
-      TEST_FILE="${{ inputs.target }}.cpp"
+      TEST_FILE="$CMAKE_CURRENT_SOURCE_DIR/${{ inputs.target }}.cpp"
       TEST_EXEC="build/${{ inputs.target }}"
       TEST_CONFIG=$(mktemp)
       RESULT_FILE="${{ inputs.target }}.result.json"

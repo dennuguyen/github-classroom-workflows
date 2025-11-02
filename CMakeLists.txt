@@ -21,6 +21,10 @@ macro(build_gtest_suite TEST)
     endif()
     target_link_libraries(${TEST} GTest::gtest_main)
     gtest_discover_tests(${TEST})
+
+    file(WRITE "${CMAKE_BINARY_DIR}/.env"
+        "CMAKE_CURRENT_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}\n"
+    )
 endmacro()
 
 add_subdirectory(test)
