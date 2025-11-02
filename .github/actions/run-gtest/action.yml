@@ -19,6 +19,7 @@ runs:
     shell: bash
     run: |
       cmake --build build --target ${{ inputs.target }}
+      echo $(cat build/.env)
       cat build/.env >> $GITHUB_ENV
   - name: Run tests
     id: run-tests
@@ -29,6 +30,9 @@ runs:
       TEST_CONFIG=$(mktemp)
       RESULT_FILE="${{ inputs.target }}.result.json"
       REPORT_FILE="${{ inputs.target }}.report.json"
+
+      echo $TEST_FILE
+      echo $TEST_EXEC
 
       python3 discover_tests.py $TEST_FILE $TEST_CONFIG > /dev/null
       python3 run_tests.py $TEST_EXEC $TEST_CONFIG $RESULT_FILE > /dev/null
