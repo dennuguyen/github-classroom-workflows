@@ -27,6 +27,14 @@ macro(build_gtest_suite TEST)
         "CMAKE_SOURCE_DIR=${CMAKE_SOURCE_DIR}\n"
         "CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}\n"
     )
+
+    get_target_property(target_dir ${TEST} RUNTIME_OUTPUT_DIRECTORY)
+    if(NOT target_dir)
+        set(target_dir ${CMAKE_CURRENT_BINARY_DIR})
+    endif()
+
+    set(target_exec "${target_dir}/${TEST}")
+    message(STATUS "Target ${TEST} executable: ${target_exec}")
 endmacro()
 
 add_subdirectory(test)
