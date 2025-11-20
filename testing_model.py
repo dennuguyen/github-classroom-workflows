@@ -2,7 +2,7 @@ from pydantic import BaseModel, field_validator
 from typing import List, Optional
 
 
-class AttrMixin:
+class _AttrMixin:
     def __getitem__(self, key):
         return getattr(self, key)
 
@@ -10,7 +10,7 @@ class AttrMixin:
         return setattr(self, key, value)
 
 
-class TestCase(BaseModel, AttrMixin):
+class TestCase(BaseModel, _AttrMixin):
     id: Optional[str] = None
     name: Optional[str] = None
     hidden: Optional[bool] = None
@@ -38,7 +38,7 @@ class TestCase(BaseModel, AttrMixin):
         return v
 
 
-class TestSuite(BaseModel, AttrMixin):
+class TestSuite(BaseModel, _AttrMixin):
     name: Optional[str] = None
     score: float = 0
     max_score: float = 0
