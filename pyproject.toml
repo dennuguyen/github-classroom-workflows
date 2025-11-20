@@ -1,0 +1,12 @@
+[project]
+name = "workflows"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "actions-toolkit>=0.1.15",
+    "colored>=2.3.1",
+    "pydantic>=2.12.4",
+    "ruff>=0.14.5",
+]
