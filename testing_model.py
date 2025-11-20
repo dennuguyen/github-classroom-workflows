@@ -1,11 +1,14 @@
 from pydantic import BaseModel, field_validator
 from typing import List, Optional
 
+
 class AttrMixin:
     def __getitem__(self, key):
         return getattr(self, key)
+
     def __setitem__(self, key, value):
         return setattr(self, key, value)
+
 
 class TestCase(BaseModel, AttrMixin):
     id: Optional[str] = None
@@ -19,6 +22,7 @@ class TestCase(BaseModel, AttrMixin):
     feedback: Optional[str] = None
     expected: Optional[str] = None
     observed: Optional[str] = None
+    timeout: Optional[float] = None
     # TODO: get student output
 
     @field_validator("feedback", "expected", "observed", mode="before")
@@ -32,6 +36,7 @@ class TestCase(BaseModel, AttrMixin):
         if isinstance(v, str):
             return v.encode("utf-8").decode("unicode_escape")
         return v
+
 
 class TestSuite(BaseModel, AttrMixin):
     name: Optional[str] = None

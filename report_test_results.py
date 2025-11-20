@@ -7,6 +7,7 @@ from actions_toolkit import core
 from colored import Fore, Back, Style
 from testing_model import TestCase, TestSuite
 
+
 def _print_diff(text1: str, text2: str) -> str:
     text1 = text1 or ""
     text2 = text2 or ""
@@ -19,6 +20,7 @@ def _print_diff(text1: str, text2: str) -> str:
             print(f"{Back.dark_red_1}{line:<{columns}}{Style.reset}")
         else:
             print(line)
+
 
 def print_testcase(test: TestCase) -> bool:
     line = "{style}{icon} {name}{point}{reset}"
@@ -35,13 +37,16 @@ def print_testcase(test: TestCase) -> bool:
         format["style"] = f"{Fore.red}{Style.bold}"
         format["icon"] = "❌"
         if not test.hidden:
-            show_feedback = lambda feedback, expected, observed: (
-                core.start_group("Feedback"),
-                print(feedback) if feedback else None,
-                print("Difference was:"),
-                _print_diff(expected, observed),
-                core.end_group()
-            )
+
+            def show_feedback(feedback, expected, observed):
+                return (
+                    core.start_group("Feedback"),
+                    print(feedback) if feedback else None,
+                    print("Difference was:"),
+                    _print_diff(expected, observed),
+                    core.end_group(),
+                )
+
     if test.hidden:
         format["name"] = "(hidden test)"
     else:
@@ -53,17 +58,22 @@ def print_testcase(test: TestCase) -> bool:
     if show_feedback:
         show_feedback(test.feedback, test.expected, test.observed)
 
+
 def print_testsuite(suite: TestSuite):
     print("🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀")
     line = f"{suite.name} ({suite.score}/{suite.max_score})"
-    print(f"{Fore.green if suite.score == suite.max_score else Fore.red}{Style.bold}{line}{Style.reset}")
+    print(
+        f"{Fore.green if suite.score == suite.max_score else Fore.red}{Style.bold}{line}{Style.reset}"
+    )
+
 
 def notify_classroom(score: int, max_score: int):
     text = f"Points {score}/{max_score}"
     core.notice(text, title="Autograding complete")
 
-    summary = json.dumps({ "totalPoints": score, "maxPoints": max_score })
+    summary = json.dumps({"totalPoints": score, "maxPoints": max_score})
     core.notice(summary, title="Autograding report")
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
@@ -83,5 +93,5 @@ if __name__ == "__main__":
 
             grand_score += suite.score
             grand_max_score += suite.max_score
-    
+
     notify_classroom(grand_score, grand_max_score)
